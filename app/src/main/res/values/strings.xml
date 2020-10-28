@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">jump360</string>
+    <string name="images">Images</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="no_data_found">No data found!</string>
+    <string name="permission_txt">Permission require!</string>
+
+</resources>
