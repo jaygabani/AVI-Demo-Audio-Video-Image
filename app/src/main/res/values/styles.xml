@@ -29,8 +29,9 @@
     <style name="commonVideoView">
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">@id/container</item>
+        <item name="layout_constraintTop_toTopOf">@id/container</item>
+
     </style>
 
 </resources>
