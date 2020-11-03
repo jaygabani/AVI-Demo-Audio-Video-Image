@@ -26,7 +26,6 @@ public class Util {
     private Util() {
     }
 
-
     public boolean checkPermission(Activity activity) {
         int write = ContextCompat.checkSelfPermission(activity, WRITE_EXTERNAL_STORAGE);
         int read = ContextCompat.checkSelfPermission(activity, READ_EXTERNAL_STORAGE);

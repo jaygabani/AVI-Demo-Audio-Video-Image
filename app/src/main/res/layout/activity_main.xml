@@ -10,11 +10,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvAVI"
         style="@style/commonForChildView"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
+        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2" />
+        app:spanCount="1" />
 
     <TextView
         android:id="@+id/txtNoData"

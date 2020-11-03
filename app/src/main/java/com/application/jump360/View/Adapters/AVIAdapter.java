@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +18,6 @@ import com.application.jump360.Models.AVIModel;
 import com.application.jump360.R;
 import com.application.jump360.Utils.AppEnum;
 import com.application.jump360.View.Activity.ImageViewActivity;
-import com.application.jump360.View.Activity.VideoPlayActivity;
 import com.application.jump360.ViewModel.AVIViewModel;
 import com.google.android.material.card.MaterialCardView;
 
@@ -58,12 +58,15 @@ public class AVIAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.i("JAY", "onBindViewHolder: " + position);
 
         if (holder instanceof ImageViewHolder) {
             ((ImageViewHolder) holder).ivImage.setImageURI(items.get(position).getPath());
 
             ((ImageViewHolder) holder).ivImage.setOnClickListener(view -> {
+                lastPosition = -1;
+                aviViewModel.setPause(mediaPlayer);
+                notifyDataSetChanged();
+
                 context.startActivity(new Intent(context, ImageViewActivity.class)
                         .putExtra("path", items.get(position).getPath().toString()));
                 context.overridePendingTransition(R.anim.from_right, R.anim.to_left);
@@ -76,39 +79,75 @@ public class AVIAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             switch (items.get(position).getType()) {
                 case VIDEO:
 
-                    viewHolder.ivPlay.setVisibility(View.GONE);
-                    viewHolder.ivStop.setVisibility(View.GONE);
                     viewHolder.ivImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_video));
 
-                    viewHolder.cvAV.setOnClickListener(view -> {
-                        context.startActivity(new Intent(context, VideoPlayActivity.class)
-                                .putExtra("position", position));
-                        context.overridePendingTransition(R.anim.from_right, R.anim.to_left);
+                    viewHolder.ivPlay.setOnClickListener(view -> {
+                        aviViewModel.setPause(mediaPlayer);
 
+                        if (lastPosition == position && items.get(position).isPlaying()) {
+                            lastPosition = -1;
+                            viewHolder.ivPlay.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_play));
+                            notifyDataSetChanged();
+
+                            viewHolder.videoView.setVisibility(View.GONE);
+                            viewHolder.ivImage.setVisibility(View.VISIBLE);
+                            aviViewModel.pauseVideo(viewHolder.videoView);
+
+                        } else {
+                            lastPosition = position;
+                            viewHolder.ivPlay.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_pause));
+                            notifyDataSetChanged();
+                            viewHolder.ivImage.setVisibility(View.GONE);
+                            viewHolder.videoView.setVisibility(View.VISIBLE);
+                            items.get(position).setPlaying(true);
+                            aviViewModel.playVideo(position, viewHolder.videoView);
+                        }
                     });
+
                     break;
                 case AUDIO:
                     viewHolder.ivImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_audio));
-
                     viewHolder.ivPlay.setOnClickListener(view -> {
-                        lastPosition = position;
-                        viewHolder.ivPlay.setColorFilter(context.getResources().getColor(R.color.colorAccent));
-                        notifyDataSetChanged();
-                        aviViewModel.setPlay(mediaPlayer, context, items.get(position).getPath(), position);
-                    });
-
-                    viewHolder.ivStop.setOnClickListener(view -> {
-                        if (lastPosition == position) {
-                            viewHolder.ivPlay.setColorFilter(context.getResources().getColor(R.color.black));
-                            aviViewModel.setStop(mediaPlayer);
+                        if (lastPosition == position && items.get(position).isPlaying()) {
+                            lastPosition = -1;
+                            viewHolder.ivPlay.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_play));
+                            notifyDataSetChanged();
+                            viewHolder.ivPlay.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_play));
+                            aviViewModel.setPause(mediaPlayer);
+                        } else {
+                            lastPosition = position;
+                            viewHolder.ivPlay.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_pause));
+                            notifyDataSetChanged();
+                            items.get(position).setPlaying(true);
+                            aviViewModel.setPlay(mediaPlayer, context, items.get(position).getPath(), position);
                         }
                     });
                     break;
             }
+
             if (lastPosition != position) {
-                viewHolder.ivPlay.setColorFilter(context.getResources().getColor(R.color.black));
+                Log.i("JAY first ", "onBindViewHolder: " + position);
+                viewHolder.videoView.setVisibility(View.GONE);
+                viewHolder.ivImage.setVisibility(View.VISIBLE);
+                viewHolder.ivPlay.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_play));
+                items.get(position).setPlaying(false);
+                switch (items.get(position).getType()) {
+                    case VIDEO:
+                        viewHolder.ivImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_video));
+                        aviViewModel.pauseVideo(viewHolder.videoView);
+                        break;
+                    case AUDIO:
+                        viewHolder.ivImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_audio));
+                        break;
+                }
             }
         }
+        System.gc();
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewRecycled(holder);
     }
 
     @Override
@@ -126,25 +165,23 @@ public class AVIAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class AVViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.cvAV)
-        MaterialCardView cvAV;
+        @BindView(R.id.videoView)
+        VideoView videoView;
         @BindView(R.id.txtTitle)
         TextView txtTitle;
         @BindView(R.id.ivImage)
         ImageView ivImage;
         @BindView(R.id.ivPlay)
         ImageView ivPlay;
-        @BindView(R.id.ivStop)
-        ImageView ivStop;
+        @BindView(R.id.ivPause)
+        ImageView ivPause;
 
         public AVViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mediaPlayer = new MediaPlayer();
         }
-
     }
-
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 

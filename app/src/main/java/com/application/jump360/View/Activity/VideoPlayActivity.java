@@ -3,7 +3,6 @@ package com.application.jump360.View.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
@@ -40,6 +39,8 @@ public class VideoPlayActivity extends AppCompatActivity {
 
     public void setVideo() {
         video_index = getIntent().getIntExtra("position", 0);
+        playVideo(video_index);
+
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -52,7 +53,7 @@ public class VideoPlayActivity extends AppCompatActivity {
                 }
             }
         });
-        playVideo(video_index);
+
     }
 
     // play video file
@@ -89,7 +90,6 @@ public class VideoPlayActivity extends AppCompatActivity {
             video_index = 0;
             playVideo(video_index);
         }
-
     }
 
     //pause video

@@ -3,27 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvAV"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:layout_marginLeft="4dp"
+    android:layout_height="200dp"
+    android:layout_marginLeft="16dp"
     android:layout_marginTop="8dp"
-    android:layout_marginRight="4dp">
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="4dp"
+    android:paddingLeft="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center">
 
-        <ImageView
-            android:id="@+id/ivPlay"
-            style="@style/commonPlayStop"
-            android:src="@drawable/ic_play"
-            app:layout_constraintStart_toStartOf="parent" />
+        <VideoView
+            android:id="@+id/videoView"
+            style="@style/commonForChildView"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/ivStop"
-            style="@style/commonPlayStop"
-            android:src="@drawable/ic_stop"
-            app:layout_constraintLeft_toRightOf="@id/ivPlay" />
 
         <ImageView
             android:id="@+id/ivImage"
@@ -36,20 +33,44 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <View
+            android:id="@+id/loutBottom"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/shadow"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:background="@drawable/shadow"
-            android:gravity="bottom"
+            android:layout_height="35dp"
+            android:gravity="center|left"
             android:maxLines="1"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
+            android:paddingLeft="8dp"
             android:singleLine="true"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="@id/loutBottom"
+            app:layout_constraintTop_toTopOf="@id/loutBottom" />
+
+        <ImageView
+            android:id="@+id/ivPlay"
+            style="@style/commonPlayStop"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_play" />
+
+        <ImageView
+            android:id="@+id/ivPause"
+            style="@style/commonPlayStop"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_pause"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

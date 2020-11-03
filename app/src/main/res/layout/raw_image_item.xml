@@ -2,11 +2,12 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cvImage"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="200dp"
     android:layout_gravity="center"
-    android:layout_marginLeft="4dp"
+    android:layout_marginLeft="16dp"
     android:layout_marginTop="8dp"
-    android:layout_marginRight="4dp">
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="4dp">
 
     <ImageView
         android:id="@+id/ivImage"

@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     requestPermission();
                 return true;
             case R.id.menuVideo:
-
                 if (Util.getInstance().checkPermission(activity))
                     pickFile(activity, AppEnum.AVIType.VIDEO);
                 else
@@ -140,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         }
-
     }
 
     @Override

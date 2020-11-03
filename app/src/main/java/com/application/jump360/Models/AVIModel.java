@@ -9,6 +9,7 @@ public class AVIModel {
     public Uri path;
     public String title;
     public AppEnum.AVIType type;
+    public boolean isPlaying = false;
 
     public AVIModel(Uri path, String title, AppEnum.AVIType type) {
         this.path = path;
@@ -29,4 +30,11 @@ public class AVIModel {
         return type;
     }
 
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
+    }
 }

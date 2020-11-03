@@ -42,7 +42,7 @@ dependencies {
     //Material library
     implementation 'com.google.android.material:material:1.2.1'
 
-   
+
     // viewmodel
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
 

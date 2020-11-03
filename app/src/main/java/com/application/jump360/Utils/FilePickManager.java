@@ -39,7 +39,6 @@ public class FilePickManager {
             default:
                 break;
         }
-
     }
 
     // start-> get selected file based on it's type
@@ -56,7 +55,6 @@ public class FilePickManager {
             }
         } else {
             Uri uri = data.getData();
-
             result.add(splitData(uri, type));
         }
 
